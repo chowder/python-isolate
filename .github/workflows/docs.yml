@@ -27,11 +27,12 @@ jobs:
       - name: Run pydoc
         run: |
           pydoc -o ./docs --docformat google isolate
-      - name: Update docs
+      - name: Checkout docs
         uses: actions/checkout@v2
         with:
           ref: gh-pages
           path: gh-pages
+      - name: Update docs
         run: |
           rm -rf gh-pages/*
           cp -R docs/* gh-pages/*
