@@ -1,5 +1,7 @@
 # `python-isolate`
 
+![wheels](https://img.shields.io/pypi/wheel/isolate)
+
 A Python package to interface with [`isolate`](https://github.com/ioi/isolate) sandboxes.
 
 ## Example
@@ -23,5 +25,14 @@ with isolate() as workspace:
     workspace.add_file('~/example.sh')
     # Run the program with arguments
     result = workspace.run(['/bin/bash', 'example.sh'])
+
 # Sandbox is automatically cleaned up
 ```
+
+## Distributions
+
+- https://pypi.org/project/isolate/
+
+## Requirements
+
+- You need to have [`isolate`](https://github.com/ioi/isolate) binary installed on your machine to run the binary.
