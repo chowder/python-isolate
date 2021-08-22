@@ -1,0 +1,44 @@
+name: Docs
+
+on:
+  push:
+    branches: [$default-branch]
+  workflow_dispatch:
+
+jobs:
+  docs:
+    name: Update docs
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install pydoc
+        run: |
+          pip install pydoc
+      - name: Run pydoc
+        run: |
+          pydoc -o ./docs --docformat google isolate
+      - name: Checkout docs
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: gh-pages
+      - name: Update docs
+        run: |
+          rm -rf gh-pages/*
+          cp -R docs/* gh-pages/*
+          git config user.name github-actions
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          cd gh-pages
+          git add *
+          git commit -m "CI: Update docs for $(git rev-parse HEAD)"
+          git push

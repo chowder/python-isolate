@@ -16,15 +16,26 @@ logger = logging.getLogger(__name__)
 
 
 class IsolateException(Exception):
+    """General exception type for the package"""
     pass
 
 
 class IsolateInitException(Exception):
+    """Exception type thrown during the initialisation of an isolate workspace"""
     pass
 
 
 class IsolateSandbox:
+    """Class representing an isolate sandbox"""
+
     def __init__(self, options: IsolateOptions, workdir: str, box_id: str) -> None:
+        """Constructor for IsolateSandbox
+
+        Args:
+            options (IsolateOptions): The options used to initialise the sandbox
+            workdir (str): The working directory for the sandbox
+            box_id (str): The unique ID associated with this sandbox
+        """
         self.options = options
         self.box_id = box_id
         self.workdir = workdir
@@ -32,6 +43,17 @@ class IsolateSandbox:
         self.tmpdir = os.path.join(workdir, 'tmp')
 
     def add_file(self, source: str, destination: Optional[str] = None) -> None:
+        """Copies a file from the host to the sandbox
+
+        Args:
+            source (str): A path to a file on the host system
+            destination (str, optional): A destination path relative to the sandbox working directory. 
+                                         Defaults to '<working directory>/box/<file name>' if not provided.
+
+        Raises:
+            IsolateException: If the destination path is not within the working directory
+            IsolateException: If the source file path does not exist
+        """
         # If destination is not specified, just copy the file to boxdir
         if destination is None:
             destination = os.path.join(self.boxdir, os.path.basename(source))
@@ -44,7 +66,7 @@ class IsolateSandbox:
 
         if not os.path.exists(source):
             raise IsolateException(
-                f"Source file path provided: '{source} does not exist")
+                f"Source file path provided: '{source}' does not exist")
 
         # If the destination path is a relative path, make it an absolute path wrt. to boxdir
         if not os.path.isabs(destination):
@@ -67,6 +89,14 @@ class IsolateSandbox:
     # TODO: Wrap the results of this function in an IsolateResult class,
     #   providing an interface for the output metadata
     def run(self, run_args: List[str]) -> subprocess.CompletedProcess:
+        """Runs a program in the sandbox
+
+        Args:
+            run_args (List[str]): A list of program arguments; the program to execute is the first item in `args`.
+
+        Returns:
+            subprocess.CompletedProcess: The result of executing `isolate --run`
+        """
         args = ['isolate', '--run']
         args.extend(self.options.as_args())
         args.extend(['--'])
@@ -79,6 +109,11 @@ class IsolateSandbox:
         return process
 
     def cleanup(self) -> None:
+        """Cleans up the isolate sandbox
+
+        Raises:
+            IsolateException: If the clean-up step fails for any reason
+        """
         # Remove all files from the box before cleaning up (see: https://github.com/ioi/isolate/issues/77)
         remove_directory_contents(self.boxdir)
 
@@ -98,6 +133,19 @@ class IsolateSandbox:
 
 @contextmanager
 def isolate(options: IsolateOptions = IsolateOptions(), cleanup=True):
+    """A context-managed function to create an isolate sandbox 
+
+    Args:
+        options (IsolateOptions, optional): Options for initialising the isolate sandbox, arguments will be later 
+                                            re-used for running programs in the sandbox.
+        cleanup (bool, optional): If false, will retain the sandbox for later inspection. Defaults to True.
+
+    Raises:
+        IsolateInitException: If the sandbox failed to initialise
+
+    Yields:
+        IsolateSandbox: The isolate sandbox
+    """
     args: List[str] = ['isolate', '--init']
     args.extend(options.as_args())
 
