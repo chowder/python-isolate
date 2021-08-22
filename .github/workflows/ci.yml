@@ -20,7 +20,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v2
       - name: Checkout isolate
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
         with:
           repository: ioi/isolate
           ref: v1.8.1
