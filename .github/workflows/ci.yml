@@ -28,13 +28,14 @@ jobs:
       - name: Build isolate
         run: |
           sudo apt-get install libcap-dev
-          cd isolate && sudo make install
+          (cd isolate && sudo make install)
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
       - name: Run unit tests
         run: |
+          python setup.py install
           python -m unittest discover -s tests
 
   flake8:
