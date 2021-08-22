@@ -27,14 +27,14 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: gh-pages
-          path: gh-pages
+          path: gh_pages
       - name: Update docs
         run: |
-          rm -rf gh-pages/*
-          cp -R docs/* gh-pages/*
+          rm -rf gh_pages/*
+          cp -R docs/* gh_pages/*
           git config user.name github-actions
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          cd gh-pages
+          cd gh_pages
           git add *
           git commit -m "CI: Update docs for $(git rev-parse HEAD)"
           git push
