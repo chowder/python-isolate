@@ -9,24 +9,20 @@ jobs:
   docs:
     name: Update docs
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install pydoc
+          python-version: 3.9
+      - name: Install pdoc
         run: |
-          pip install pydoc
-      - name: Run pydoc
+          pip install pdoc
+      - name: Run pdoc
         run: |
-          pydoc -o ./docs --docformat google isolate
+          pdoc -o ./docs --docformat google isolate
       - name: Checkout docs
         uses: actions/checkout@v2
         with:
