@@ -6,18 +6,13 @@ from isolate import IsolateOptions
 
 class IsolateTest(unittest.TestCase):
     def setUp(self) -> None:
-        with open('test.sh', 'w+') as f:
-            f.write('echo "Hello World"')
-
-    def tearDown(self) -> None:
-        if os.path.exists('test.sh'):
-            os.remove('test.sh')
+        os.chdir(os.path.dirname(__file__))
 
     def test_isolate_workspace(self):
         from isolate import isolate
 
         with isolate(IsolateOptions(box_id=10)) as sandbox:
-            sandbox.add_file('test.sh')
-            result = sandbox.run(['/bin/bash', 'test.sh'])
+            sandbox.add_file('test_data/echo.sh')
+            result = sandbox.run(['/bin/bash', 'echo.sh'])
             self.assertEqual(result.returncode, 0)
             self.assertEqual(result.stdout.decode().strip(), "Hello World")
