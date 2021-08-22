@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='isolate',
-    version='0.0.1',
+    version='0.0.2',
     description='A Python package to interface with `isolate` sandboxes',
     long_description='A Python package to interface with `isolate` sandboxes',
     url='https://github.com/chowder/python-isolate',
