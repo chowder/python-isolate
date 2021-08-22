@@ -1,6 +1,7 @@
-from isolate.options import IsolateOptions
 import os
 import unittest
+
+from isolate import IsolateOptions
 
 
 class IsolateTest(unittest.TestCase):
