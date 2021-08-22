@@ -1,6 +1,6 @@
 # `python-isolate`
 
-![wheels](https://img.shields.io/pypi/wheel/isolate)
+[![CI](https://github.com/chowder/python-isolate/actions/workflows/ci.yml/badge.svg)](https://github.com/chowder/python-isolate/actions/workflows/ci.yml) ![wheels](https://img.shields.io/pypi/wheel/isolate)
 
 A Python package to interface with [`isolate`](https://github.com/ioi/isolate) sandboxes.
 
@@ -35,4 +35,4 @@ with isolate() as workspace:
 
 ## Requirements
 
-- You need to have [`isolate`](https://github.com/ioi/isolate) binary installed on your machine to run the binary.
+- You need to have the [`isolate`](https://github.com/ioi/isolate) binary installed on your machine to use the package.
