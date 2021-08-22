@@ -12,7 +12,6 @@ class IsolateTest(unittest.TestCase):
         if os.path.exists('test.sh'):
             os.remove('test.sh')
 
-    @unittest.skip("Skip until we find a way to get `isolate` onto GitHub Actions")
     def test_isolate_workspace(self):
         from isolate import isolate
 
