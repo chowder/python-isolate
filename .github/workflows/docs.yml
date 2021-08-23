@@ -30,6 +30,7 @@ jobs:
           path: gh_pages
       - name: Update docs
         run: |
+          ls
           rm -rf gh_pages/*
           cp -R docs/* gh_pages/*
           git config user.name github-actions
